@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>QSL Card Generator</title>
+    </head>
+    <body>
+        <h1>QSL Card Generator</h1>
+        <form method="post" action="/generate">
+            Callsign 1: <input type="text" name="callsign[]" placeholder="Enter your callsign..."> <br>
+            Callsign 2: <input type="text" name="callsign[]" placeholder="Enter your callsign..."> <br>
+            Name: <input type="text" name="name" placeholder="Enter your name..."> <br>
+            Address Line 1: <input type="text" name="address1" placeholder="Enter your address..."> <br>
+            Address Line 2: <input type="text" name="address2" placeholder="Enter your address..."> <br>
+            Address Line 3: <input type="text" name="address3" placeholder="Enter your address..."> <br>
+            Address Line 4 (Country): <input type="text" name="address4" placeholder="Enter your address..."> <br>
+            County 1: <input type="text" name="county[]" placeholder="Enter your county..."> <br>
+            County 2: <input type="text" name="county[]" placeholder="Enter your county..."> <br>
+            Grid Square: <input type="text" name="grid" placeholder="Enter your grid square..."> <br>
+            CQ Zone 1: <input type="text" name="cq[]" placeholder="Enter your CQ zone..."> <br>
+            CQ Zone 2: <input type="text" name="cq[]" placeholder="Enter your CQ zone..."> <br>
+            ITU Zone 1: <input type="text" name="itu[]" placeholder="Enter your ITU zone..."> <br>
+            ITU Zone 2: <input type="text" name="itu[]" placeholder="Enter your ITU zone..."> <br>
+            <input type="submit" value="Create!">
+        </form>
+    </body>
+</html>
