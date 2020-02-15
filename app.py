@@ -6,16 +6,32 @@ Copyright (C) 2020 ClassAbbyAmp
 Released under the MIT License
 """
 
-from flask import Flask, request, render_template
 import requests
 import shutil
+import os
+
+from flask import Flask, request, render_template
+import jinja2
+from jinja2 import Template
 
 
 app = Flask(__name__)
 
-LATEX_URL = 'http://rtex.probablyaweb.site/api/v2'
 
-latex_cbox = "$\Box$ "
+latex_jinja_env = jinja2.Environment(block_start_string='\BLOCK{',
+                                     block_end_string='}',
+                                     variable_start_string='\VAR{',
+                                     variable_end_string='}',
+                                     comment_start_string='\#{',
+                                     comment_end_string='}',
+                                     line_statement_prefix='%%',
+                                     line_comment_prefix='%#',
+                                     trim_blocks=True,
+                                     autoescape=False,
+                                     loader=jinja2.FileSystemLoader(os.path.abspath('.')))
+
+
+LATEX_URL = 'http://rtex.probablyaweb.site/api/v2'
 
 
 @app.route('/')
@@ -24,6 +40,7 @@ def hello_world():
 
 @app.route('/generate', methods=['POST'])
 def gen_cart():
+    """
     latex_vars = ""
     if 'callsign[]' in request.form:
         latex_vars +="\def \myCallsign {"
@@ -39,7 +56,7 @@ def gen_cart():
         latex_vars += "}\n"
     if 'itu[]' in request.form:
         latex_vars +="\def \myITUZone {"
-        for z in request.form['itu[]']:
+        for z in request.form.getlist('itu[]'):
             latex_vars += "\> " + latex_cbox + z + "\,"
         latex_vars += "}\n"
     if 'county[]' in request.form:
@@ -47,14 +64,31 @@ def gen_cart():
         for cty in request.form.getlist('county[]'):
             latex_vars += "\> " + latex_cbox + cty + "\\\\"
         latex_vars += "}\n"
-    latex_vars += f"\def \myMailingAddr {{{request.form['address1']}\\\\ {request.form['address2']}\\\\ {request.form['address3']} \\\\ {request.form['address4']}}}\n"
-    latex_vars += f"\def \myQTH {{QTH CITY, ST, {request.form['grid']}}}\n"
+    latex_vars += f"\def \myMailingAddr {{{request.form['address1']}\\\\ {request.form['address2']}\\\\ {request.form['address3']} \\\\ {request.form['address4']} \\\\ {request.form['country']}}}\n"
+    latex_vars += f"\def \myQTH {{{request.form['qth']}}}\n"
     latex_vars += f"\def \myClubs {{CLUBS LINE 1 \\\\ CLUBS LINE 2}}\n"
     latex_vars += f"\def \myNotes {{NOTES}}\n"
+    """
+    latex_vars = {
+                "call_cbox": True,
+                "callsigns": ["KB6EE", "Va2Shf"],
+                "name": "A. V. Gold",
+                "address": "ln1 \\\\ ln2 \\\\ ln3 \\\\ ln4 \\\\ country", # maybe make this into 5 vars
+                "cq_cbox": True,
+                "cq": [1],
+                "itu_cbox": False,
+                "itu": [56, 17],
+                "county_cbox": True,
+                "county": ["Alameda"],
+                "clubs1": "HRCC YLRL",
+                "clubs2": "idk lol",
+                "qth": "Troy, NY FN32er",
+                "notes": "NOTES GO HERE",
+            }
+    template = latex_jinja_env.get_template('qsl-card.tex')
+    latex = template.render(latex_vars)
 
-    with open('qsl-card.tex') as f:
-        LATEX = f.read()
-    latex_img = render_latex('pdf', latex_vars+LATEX)
+    latex_img = render_latex('pdf', latex)
     return render_template('generate.html', data=request.form, latex=latex_img)
 
 def render_latex(fmt: str, latex: str):
