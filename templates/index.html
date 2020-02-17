@@ -2,102 +2,194 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-4.4.1.min.css') }}">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <title>QSL Card Generator</title>
     </head>
     <body>
-        <div class="container">
+        <div class="container container-md mt-5 mb-5">
             <h1>QSL Card Generator</h1>
+            <h2><small class="text-muted">by KB6EE</small></h2>
             <form method="post" action="/generate">
-                <div class="form-group row">
-                    <label for="callsign" class="col-sm-2 col-form-label">Callsign</label>
-                    <div class="input-group col-sm-4">
-                        <input type="text" class="form-control" id="callsign" name="callsign[]" required>
-                        <div class="input-group-append">
-                            <button class="btn btn-success add-field" type="button"><i class="fa fa-plus"></i></button>
+                <div class="form-group card card-body bg-light">
+                    <h3 class="card-title">Demographics</h3>
+                    <div class="form-group row">
+                        <label for="callsign" class="col-md-2 col-form-label">Callsign <b class="text-danger">*</b></label>
+                        <div class="col-md-4 copy-parent">
+                            <div class="form-group input-group copy">
+                                <input type="text" class="form-control" id="callsign" name="callsign[]" required>
+                                <div class="input-group-append">
+                                    <button class="btn btn-success add-field" type="button"><i class="fa fa-plus"></i></button>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="name" class="col-sm-2 col-form-label">Name</label>
-                    <div class="input-group col-sm-4">
-                        <input type="text" class="form-control" id="name" name="name" required>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="address1" class="col-sm-2 col-form-label">Address</label>
-                    <div class="input-group col-sm-4">
-                        <input type="text" class="form-control" id="address1" name="address1" placeholder="Line 1" required>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="address2" class="col-sm-2 col-form-label"></label>
-                    <div class="input-group col-sm-4">
-                        <input type="text" class="form-control" id="address2" name="address2" placeholder="Line 2">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="address3" class="col-sm-2 col-form-label"></label>
-                    <div class="input-group col-sm-4">
-                        <input type="text" class="form-control" id="address3" name="address3" placeholder="Line 3">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="address4" class="col-sm-2 col-form-label"></label>
-                    <div class="input-group col-sm-4">
-                        <input type="text" class="form-control" id="address4" name="address4" placeholder="Line 4">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="country" class="col-sm-2 col-form-label">Country</label>
-                    <div class="input-group col-sm-4">
-                        <input type="text" class="form-control" id="country" name="country" required>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="county" class="col-sm-2 col-form-label">County</label>
-                    <div class="input-group col-sm-4">
-                        <input type="text" class="form-control" id="county" name="county[]" required>
-                        <div class="input-group-append">
-                            <button class="btn btn-success add-field" type="button"><i class="fa fa-plus"></i></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="qth" class="col-sm-2 col-form-label">QTH</label>
-                    <div class="input-group col-sm-4">
-                        <input type="text" class="form-control" id="qth" name="qth[]" placeholder="Location and Grid Square" required>
-                        <div class="input-group-append">
-                            <button class="btn btn-success add-field" type="button"><i class="fa fa-plus"></i></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="cq" class="col-sm-2 col-form-label">CQ Zone</label>
-                    <div class="input-group col-sm-4">
-                        <input type="text" class="form-control" id="cq" name="cq[]" required>
-                        <div class="input-group-append">
-                            <button class="btn btn-success add-field" type="button"><i class="fa fa-plus"></i></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="itu" class="col-sm-2 col-form-label">ITU Zone</label>
-                    <div class="input-group col-sm-4">
-                        <input type="text" class="form-control" id="itu" name="itu[]" required>
-                        <div class="input-group-append">
-                            <button class="btn btn-success add-field" type="button"><i class="fa fa-plus"></i></button>
+                        <label for="name" class="col-md-2 col-form-label">Name <b class="text-danger">*</b></label>
+                        <div class="input-group col-md-4">
+                            <input type="text" class="form-control" id="name" name="name" required>
                         </div>
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-primary mb-2">Generate</button>
+                <div class="form-group card card-body bg-light">
+                    <h3 class="card-title">Mailing Address</h3>
+                        <div class="form-group row">
+                            <label for="address" class="col-md-2 col-form-label">Address <b class="text-danger">*</b></label>
+                            <div class="input-group col-md-4">
+                                <textarea data-limit-rows="true" class="form-control" id="address" name="address" rows="4" required></textarea>
+                            </div>
+                            <label for="country" class="col-md-2 col-form-label">Country <b class="text-danger">*</b></label>
+                            <div class="input-group col-md-4">
+                                <input type="text" class="form-control" id="country" name="country" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group card card-body bg-light">
+                        <h3>Ham Information</h3>
+                    <div class="form-group row">
+                        <label for="cq" class="col-md-2 col-form-label">CQ Zone</label>
+                        <div class="col-md-4 copy-parent">
+                            <div class="form-group input-group copy">
+                                <input type="text" class="form-control" id="cq" name="cq[]">
+                                <div class="input-group-append">
+                                    <button class="btn btn-success add-field" type="button"><i class="fa fa-plus"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <label for="itu" class="col-md-2 col-form-label">ITU Zone</label>
+                        <div class="col-md-4 copy-parent">
+                            <div class="form-group input-group copy">
+                                <input type="text" class="form-control" id="itu" name="itu[]">
+                                <div class="input-group-append">
+                                    <button class="btn btn-success add-field" type="button"><i class="fa fa-plus"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="county" class="col-md-2 col-form-label">County</label>
+                        <div class="col-md-4 copy-parent">
+                            <div class="form-group input-group copy">
+                                <input type="text" class="form-control" id="county" name="county[]">
+                                <div class="input-group-append">
+                                    <button class="btn btn-success add-field" type="button"><i class="fa fa-plus"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <label for="qth" class="col-md-2 col-form-label">QTH</label>
+                        <div class="col-md-4 copy-parent">
+                            <div class="form-group input-group copy">
+                                <input type="text" class="form-control" id="qth" name="qth[]" placeholder="Location and Grid Square">
+                                <div class="input-group-append">
+                                    <button class="btn btn-success add-field" type="button"><i class="fa fa-plus"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="club" class="col-md-2 col-form-label">Clubs</label>
+                        <div class="input-group col-md-4">
+                            <textarea data-limit-rows="true" class="form-control" id="club" name="clubs" rows="3"></textarea>
+                        </div>
+                        <label for="notes" class="col-md-2 col-form-label">Notes</label>
+                        <div class="input-group col-md-4">
+                            <textarea data-limit-rows="true" class="form-control" id="notes" name="notes" rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-group card card-body bg-light">
+                    <h3 class="card-title">Display Options</h3>
+                    <div class="form-group row">
+                        <label for="qsolines" class="col-md-2 col-form-label">QSO Rows</label>
+                        <div class="input-group col-md-4">
+                            <select class="form-control" id="qsolines" name="qsolines">
+                                <option value="1" selected>One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                            </select>
+                        </div>
+                        <label class="col-md-2 col-form-label">Callsign</label>
+                        <div class="input-group col-md-4">
+                            <div class="form-check row">
+                                <input type="checkbox" class="form-check-input" id="callcbox" name="callcbox">
+                                <label class="form-check-label" for="callcbox">Show checkboxes?</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label">CQ Zone</label>
+                        <div class="input-group col-md-4">
+                            <div class="form-check row">
+                                <input type="checkbox" class="form-check-input" id="cqcbox" name="cqcbox">
+                                <label class="form-check-label" for="cqcbox">Show checkboxes?</label>
+                                <br>
+                                <input type="checkbox" class="form-check-input" id="cqrule" name="cqrule">
+                                <label class="form-check-label" for="cqrule">Show an underline?</label>
+                            </div>
+                        </div>
+                        <label class="col-md-2 col-form-label">ITU Zone</label>
+                        <div class="input-group col-md-4">
+                            <div class="form-check row">
+                                <input type="checkbox" class="form-check-input" id="itucbox" name="itucbox">
+                                <label class="form-check-label" for="itucbox">Show checkboxes?</label>
+                                <br>
+                                <input type="checkbox" class="form-check-input" id="iturule" name="iturule">
+                                <label class="form-check-label" for="iturule">Show an underline?</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label">County</label>
+                        <div class="input-group col-md-4">
+                            <div class="form-check row">
+                                <input type="checkbox" class="form-check-input" id="countycbox" name="countycbox">
+                                <label class="form-check-label" for="countycbox">Show checkboxes?</label>
+                                <br>
+                                <input type="checkbox" class="form-check-input" id="countyrule" name="countyrule">
+                                <label class="form-check-label" for="countyrule">Show an underline?</label>
+                            </div>
+                        </div>
+                        <label class="col-md-2 col-form-label">QTH</label>
+                        <div class="col-md-4">
+                            <div class="form-check row">
+                                <input type="checkbox" class="form-check-input" id="qthcbox" name="qthcbox">
+                                <label class="form-check-label" for="qthcbox">Show checkboxes?</label>
+                                <br>
+                                <input type="checkbox" class="form-check-input" id="qthrule" name="qthrule">
+                                <label class="form-check-label" for="qthrule">Show an underline?</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary btn-lg mb-2">Generate</button>
+                </div>
             </form>
+
+            <div id="generate" class="text-center">
+                <a href="" target="blank" id="pdf-link">
+                    <button class="btn btn-success btn-lg" id="tex-btn" disabled>
+                        Download PDF <i class="fa fa-download"></i>
+                    </button>
+                </a>
+                <a href="" target="blank" id="tex-link">
+                    <button class="btn btn-success btn-lg" id="tex-btn" disabled>
+                        Download LaTeX source <i class="fa fa-download"></i>
+                    </button>
+                </a>
+                <div class="card card-body bg-light" hidden>
+                    <img src="" class="img-fluid" alt="preview of the generated QSL card">
+                </div>
+            </div>
         </div>
-        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-        <script src="{{ url_for('static', filename='js/formctl.js')}}"></script>
+        <script src="{{ url_for('static', filename='js/jquery-3.4.1.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/popper-1.16.0.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/bootstrap-4.4.1.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/main.js')}}"></script>
     </body>
 </html>
