@@ -1,5 +1,5 @@
 __pycache__/
 env/
-*.log
-*.pdf
-*.synctex.gz
+/files/*.pdf
+/files/*.tex
+/files/*.png

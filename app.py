@@ -6,13 +6,14 @@ Copyright (C) 2020 classabbyamp
 Released under the MIT License
 """
 
-import requests
-import shutil
 import os
+import shutil
+from uuid import uuid4
 
-from flask import Flask, request, render_template
+from flask import abort, Flask, jsonify, request, render_template, send_from_directory
 import jinja2
 from jinja2 import Template
+import requests
 
 
 app = Flask(__name__)
@@ -35,61 +36,74 @@ LATEX_URL = 'http://rtex.probablyaweb.site/api/v2'
 
 
 @app.route('/')
-def hello_world():
+def index():
     return render_template('index.html')
 
 @app.route('/generate', methods=['POST'])
-def gen_cart():
-    """
-    latex_vars = ""
-    if 'callsign[]' in request.form:
-        latex_vars +="\def \myCallsign {"
-        for call in request.form.getlist('callsign[]'):
-            latex_vars += latex_cbox + call + " \, "
-        latex_vars += "}\n"
-    if 'name' in request.form:
-        latex_vars += f"\def \myName {{{request.form['name']}}}\n"
-    if 'cq[]' in request.form:
-        latex_vars +="\def \myCQZone {"
-        for z in request.form.getlist('cq[]'):
-            latex_vars += "\= " + latex_cbox + z + "\,"
-        latex_vars += "}\n"
-    if 'itu[]' in request.form:
-        latex_vars +="\def \myITUZone {"
-        for z in request.form.getlist('itu[]'):
-            latex_vars += "\> " + latex_cbox + z + "\,"
-        latex_vars += "}\n"
-    if 'county[]' in request.form:
-        latex_vars += "\def \myCounty {"
-        for cty in request.form.getlist('county[]'):
-            latex_vars += "\> " + latex_cbox + cty + "\\\\"
-        latex_vars += "}\n"
-    latex_vars += f"\def \myMailingAddr {{{request.form['address1']}\\\\ {request.form['address2']}\\\\ {request.form['address3']} \\\\ {request.form['address4']} \\\\ {request.form['country']}}}\n"
-    latex_vars += f"\def \myQTH {{{request.form['qth']}}}\n"
-    latex_vars += f"\def \myClubs {{CLUBS LINE 1 \\\\ CLUBS LINE 2}}\n"
-    latex_vars += f"\def \myNotes {{NOTES}}\n"
-    """
-    latex_vars = {
-                "call_cbox": True,
-                "callsigns": ["***REMOVED***", "***REMOVED***"],
-                "name": "A. V. G.",
-                "address": "ln1 \\\\ ln2 \\\\ ln3 \\\\ ln4 \\\\ country", # maybe make this into 5 vars
-                "cq_cbox": True,
-                "cq": [1],
-                "itu_cbox": False,
-                "itu": [56, 17],
-                "county_cbox": True,
-                "county": ["Alameda"],
-                "clubs1": "HRCC YLRL",
-                "clubs2": "idk lol",
-                "qth": "Troy, NY FN32er",
-                "notes": "NOTES GO HERE",
-            }
-    template = latex_jinja_env.get_template('qsl-card.tex')
-    latex = template.render(latex_vars)
+def gen_card():
+    form = request.form
 
-    latex_img = render_latex('pdf', latex)
-    return render_template('generate.html', data=request.form, latex=latex_img)
+    latex_vars = {
+        # Demographic
+        "callsigns": form.getlist("callsign[]")[0:2],
+        "name": form.get("name", ""),
+        # Address
+        "address": form.get("address", "").split("\n")[0:4],
+        "country": form.get("country", ""),
+        # Ham Info
+        "cq": form.getlist("cq[]")[0:3],
+        "itu": form.getlist("itu[]")[0:3],
+        "county": form.getlist("county[]")[0:3],
+        "qth": form.getlist("qth[]")[0:3],
+        "clubs": form.get("clubs", "").split("\n")[0:3],
+        "notes": form.get("notes", "").split("\n")[0:3],
+        # Options
+        "qso_lines": form.get("qsolines", 1),
+        "call_cbox": True if "callcbox" in form else False,
+        "cq_cbox": True if "cqcbox" in form else False,
+        "cq_rule": True if "cqrule" in form else False,
+        "itu_cbox": True if "itucbox" in form else False,
+        "itu_rule": True if "iturule" in form else False,
+        "county_cbox": True if "countycbox" in form else False,
+        "county_rule": True if "countyrule" in form else False,
+        "qth_cbox": True if "qthcbox" in form else False,
+        "qth_rule": True if "qthrule" in form else False,
+    }
+
+    try:
+        template = latex_jinja_env.get_template('templates/qsl-card.tex')
+        latex = template.render(latex_vars)
+    except Exception as err:
+        return jsonify({"success": False, "error": err})
+
+    # write latex and outputs to files with UUID filename
+    latex_fn = str(uuid4())
+    try:
+        with open("files/" + latex_fn + ".tex", "w") as latex_file:
+            latex_file.write(latex)
+    except Exception as err:
+        return jsonify({"success": False, "error": err})
+
+    try:
+        png_url = render_latex('png', latex)
+        png_resp = requests.get(png_url)
+        with open("files/" + latex_fn + ".png", "wb") as png_file:
+            png_file.write(png_resp.content)
+    except Exception as err:
+        return jsonify({"success": False, "error": err})
+
+    try:
+        pdf_url = render_latex('pdf', latex)
+        pdf_resp = requests.get(pdf_url)
+        with open("files/" + latex_fn + ".pdf", "wb") as pdf_file:
+            pdf_file.write(pdf_resp.content)
+    except Exception as err:
+        return jsonify({"success": False, "error": err})
+
+    return jsonify({"success": True,
+                    "img": f"/file/png/{latex_fn}",
+                    "pdf": f"/file/pdf/{latex_fn}",
+                    "src": f"/file/tex/{latex_fn}"})
 
 def render_latex(fmt: str, latex: str):
     payload = {'code': latex, 'format': fmt}
@@ -97,5 +111,23 @@ def render_latex(fmt: str, latex: str):
     response.raise_for_status()
     resp_data = response.json()
     if resp_data['status'] != 'success':
-        raise Exception('Failed to render LaTeX')
+        raise Exception('Failed to render LaTeX: ' + resp_data["description"])
     return LATEX_URL + '/' + resp_data['filename']
+
+@app.route("/file/<string:ft>/<string:fn>")
+def get_file(ft: str, fn: str):
+    ft = ft.lower()
+    fn = fn.lower()
+
+    if ft in ["pdf", "tex"]:
+        try:
+            return send_from_directory("files", fn + "." + ft, as_attachment=True)
+        except FileNotFoundError:
+            abort(404)
+    elif ft == "png":
+        try:
+            return send_from_directory("files", fn + ".png")
+        except FileNotFoundError:
+            abort(404)
+    else:
+        abort(404)
