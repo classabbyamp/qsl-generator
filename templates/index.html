@@ -2,20 +2,22 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
         <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-4.4.1.min.css') }}">
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
         <title>QSL Card Generator</title>
     </head>
     <body>
-        <div class="container container-md mt-5 mb-5">
-            <h1>QSL Card Generator</h1>
-            <h2><small class="text-muted">by KB6EE</small></h2>
-            <form method="post" action="/generate">
+        <div class="container-lg mt-5 mb-5">
+            <h1>QSL Card Generator <small class="text-muted">by KB6EE</small></h1>
+            <form role="form">
                 <div class="form-group card card-body bg-light">
                     <h3 class="card-title">Demographics</h3>
                     <div class="form-group row">
-                        <label for="callsign" class="col-md-2 col-form-label">Callsign <b class="text-danger">*</b></label>
-                        <div class="col-md-4 copy-parent">
+                        <label for="callsign" class="col-lg-2 col-form-label">Callsign <b class="text-danger">*</b></label>
+                        <div class="col-lg-4 copy-parent">
                             <div class="form-group input-group copy">
                                 <input type="text" class="form-control" id="callsign" name="callsign[]" required>
                                 <div class="input-group-append">
@@ -23,8 +25,8 @@
                                 </div>
                             </div>
                         </div>
-                        <label for="name" class="col-md-2 col-form-label">Name <b class="text-danger">*</b></label>
-                        <div class="input-group col-md-4">
+                        <label for="name" class="col-lg-2 col-form-label">Name <b class="text-danger">*</b></label>
+                        <div class="input-group col-lg-4">
                             <input type="text" class="form-control" id="name" name="name" required>
                         </div>
                     </div>
@@ -33,12 +35,12 @@
                 <div class="form-group card card-body bg-light">
                     <h3 class="card-title">Mailing Address</h3>
                         <div class="form-group row">
-                            <label for="address" class="col-md-2 col-form-label">Address <b class="text-danger">*</b></label>
-                            <div class="input-group col-md-4">
+                            <label for="address" class="col-lg-2 col-form-label">Address <b class="text-danger">*</b></label>
+                            <div class="input-group col-lg-4">
                                 <textarea data-limit-rows="true" class="form-control" id="address" name="address" rows="4" required></textarea>
                             </div>
-                            <label for="country" class="col-md-2 col-form-label">Country <b class="text-danger">*</b></label>
-                            <div class="input-group col-md-4">
+                            <label for="country" class="col-lg-2 col-form-label">Country <b class="text-danger">*</b></label>
+                            <div class="input-group col-lg-4">
                                 <input type="text" class="form-control" id="country" name="country" required>
                             </div>
                         </div>
@@ -47,8 +49,8 @@
                     <div class="form-group card card-body bg-light">
                         <h3>Ham Information</h3>
                     <div class="form-group row">
-                        <label for="cq" class="col-md-2 col-form-label">CQ Zone</label>
-                        <div class="col-md-4 copy-parent">
+                        <label for="cq" class="col-lg-2 col-form-label">CQ Zone</label>
+                        <div class="col-lg-4 copy-parent">
                             <div class="form-group input-group copy">
                                 <input type="text" class="form-control" id="cq" name="cq[]">
                                 <div class="input-group-append">
@@ -56,8 +58,8 @@
                                 </div>
                             </div>
                         </div>
-                        <label for="itu" class="col-md-2 col-form-label">ITU Zone</label>
-                        <div class="col-md-4 copy-parent">
+                        <label for="itu" class="col-lg-2 col-form-label">ITU Zone</label>
+                        <div class="col-lg-4 copy-parent">
                             <div class="form-group input-group copy">
                                 <input type="text" class="form-control" id="itu" name="itu[]">
                                 <div class="input-group-append">
@@ -68,8 +70,8 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="county" class="col-md-2 col-form-label">County</label>
-                        <div class="col-md-4 copy-parent">
+                        <label for="county" class="col-lg-2 col-form-label">County</label>
+                        <div class="col-lg-4 copy-parent">
                             <div class="form-group input-group copy">
                                 <input type="text" class="form-control" id="county" name="county[]">
                                 <div class="input-group-append">
@@ -77,8 +79,8 @@
                                 </div>
                             </div>
                         </div>
-                        <label for="qth" class="col-md-2 col-form-label">QTH</label>
-                        <div class="col-md-4 copy-parent">
+                        <label for="qth" class="col-lg-2 col-form-label">QTH</label>
+                        <div class="col-lg-4 copy-parent">
                             <div class="form-group input-group copy">
                                 <input type="text" class="form-control" id="qth" name="qth[]" placeholder="Location and Grid Square">
                                 <div class="input-group-append">
@@ -89,12 +91,12 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="club" class="col-md-2 col-form-label">Clubs</label>
-                        <div class="input-group col-md-4">
+                        <label for="club" class="col-lg-2 col-form-label">Clubs</label>
+                        <div class="input-group col-lg-4">
                             <textarea data-limit-rows="true" class="form-control" id="club" name="clubs" rows="3"></textarea>
                         </div>
-                        <label for="notes" class="col-md-2 col-form-label">Notes</label>
-                        <div class="input-group col-md-4">
+                        <label for="notes" class="col-lg-2 col-form-label">Notes</label>
+                        <div class="input-group col-lg-4">
                             <textarea data-limit-rows="true" class="form-control" id="notes" name="notes" rows="3"></textarea>
                         </div>
                     </div>
@@ -104,89 +106,103 @@
                 <div class="form-group card card-body bg-light">
                     <h3 class="card-title">Display Options</h3>
                     <div class="form-group row">
-                        <label for="qsolines" class="col-md-2 col-form-label">QSO Rows</label>
-                        <div class="input-group col-md-4">
-                            <select class="form-control" id="qsolines" name="qsolines">
+                        <label for="qsolines" class="col-lg-2 col-form-label">QSO Rows</label>
+                        <div class="input-group col-lg-4">
+                            <select class="form-control col-6" id="qsolines" name="qsolines">
                                 <option value="1" selected>One</option>
                                 <option value="2">Two</option>
                                 <option value="3">Three</option>
                             </select>
                         </div>
-                        <label class="col-md-2 col-form-label">Callsign</label>
-                        <div class="input-group col-md-4">
-                            <div class="form-check row">
-                                <input type="checkbox" class="form-check-input" id="callcbox" name="callcbox">
-                                <label class="form-check-label" for="callcbox">Show checkboxes?</label>
+                        <label class="col-lg-2 col-form-label">Callsign</label>
+                        <div class="input-group col-lg-4">
+                            <div class="form-check row pt-2">
+                                <input type="checkbox" id="callcbox" name="callcbox">
+                                <label for="callcbox">Show checkboxes?</label>
                             </div>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-2 col-form-label">CQ Zone</label>
-                        <div class="input-group col-md-4">
-                            <div class="form-check row">
-                                <input type="checkbox" class="form-check-input" id="cqcbox" name="cqcbox">
-                                <label class="form-check-label" for="cqcbox">Show checkboxes?</label>
+                        <label class="col-lg-2 col-form-label">CQ Zone</label>
+                        <div class="input-group col-lg-4">
+                            <div class="form-check row pt-2">
+                                <input type="checkbox" id="cqcbox" name="cqcbox">
+                                <label for="cqcbox">Show checkboxes?</label>
                                 <br>
-                                <input type="checkbox" class="form-check-input" id="cqrule" name="cqrule">
-                                <label class="form-check-label" for="cqrule">Show an underline?</label>
+                                <input type="checkbox" id="cqrule" name="cqrule">
+                                <label for="cqrule">Show an underline?</label>
                             </div>
                         </div>
-                        <label class="col-md-2 col-form-label">ITU Zone</label>
-                        <div class="input-group col-md-4">
-                            <div class="form-check row">
-                                <input type="checkbox" class="form-check-input" id="itucbox" name="itucbox">
-                                <label class="form-check-label" for="itucbox">Show checkboxes?</label>
+                        <label class="col-lg-2 col-form-label">ITU Zone</label>
+                        <div class="input-group col-lg-4">
+                            <div class="form-check row pt-2">
+                                <input type="checkbox" id="itucbox" name="itucbox">
+                                <label for="itucbox">Show checkboxes?</label>
                                 <br>
-                                <input type="checkbox" class="form-check-input" id="iturule" name="iturule">
-                                <label class="form-check-label" for="iturule">Show an underline?</label>
+                                <input type="checkbox" id="iturule" name="iturule">
+                                <label for="iturule">Show an underline?</label>
                             </div>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-2 col-form-label">County</label>
-                        <div class="input-group col-md-4">
-                            <div class="form-check row">
-                                <input type="checkbox" class="form-check-input" id="countycbox" name="countycbox">
-                                <label class="form-check-label" for="countycbox">Show checkboxes?</label>
+                        <label class="col-lg-2 col-form-label">County</label>
+                        <div class="input-group col-lg-4">
+                            <div class="form-check row pt-2">
+                                <input type="checkbox" id="countycbox" name="countycbox">
+                                <label for="countycbox">Show checkboxes?</label>
                                 <br>
-                                <input type="checkbox" class="form-check-input" id="countyrule" name="countyrule">
-                                <label class="form-check-label" for="countyrule">Show an underline?</label>
+                                <input type="checkbox" id="countyrule" name="countyrule">
+                                <label for="countyrule">Show an underline?</label>
                             </div>
                         </div>
-                        <label class="col-md-2 col-form-label">QTH</label>
-                        <div class="col-md-4">
-                            <div class="form-check row">
-                                <input type="checkbox" class="form-check-input" id="qthcbox" name="qthcbox">
-                                <label class="form-check-label" for="qthcbox">Show checkboxes?</label>
+                        <label class="col-lg-2 col-form-label">QTH</label>
+                        <div class="col-lg-4">
+                            <div class="form-check row pt-2">
+                                <input type="checkbox" id="qthcbox" name="qthcbox">
+                                <label for="qthcbox">Show checkboxes?</label>
                                 <br>
-                                <input type="checkbox" class="form-check-input" id="qthrule" name="qthrule">
-                                <label class="form-check-label" for="qthrule">Show an underline?</label>
+                                <input type="checkbox" id="qthrule" name="qthrule">
+                                <label for="qthrule">Show an underline?</label>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="text-center">
-                    <button type="submit" class="btn btn-primary btn-lg mb-2">Generate</button>
+                    <button type="button" class="btn btn-primary btn-lg mb-2" id="generate">Generate</button>
                 </div>
             </form>
 
-            <div id="generate" class="text-center">
+            <div id="generated" class="text-center">
                 <a href="" target="blank" id="pdf-link">
-                    <button class="btn btn-success btn-lg" id="tex-btn" disabled>
+                    <button class="btn btn-success btn-lg mb-2" id="pdf-btn" hidden disabled>
                         Download PDF <i class="fa fa-download"></i>
                     </button>
                 </a>
-                <a href="" target="blank" id="tex-link">
-                    <button class="btn btn-success btn-lg" id="tex-btn" disabled>
+                <a href="" id="tex-link">
+                    <button class="btn btn-success btn-lg mb-2" id="tex-btn" hidden disabled>
                         Download LaTeX source <i class="fa fa-download"></i>
                     </button>
                 </a>
-                <div class="card card-body bg-light" hidden>
-                    <img src="" class="img-fluid" alt="preview of the generated QSL card">
+                <div class="card card-body bg-light mt-1" id="qsl-img" hidden>
+                    <img src="" class="img-fluid" id="qsl-preview" alt="preview of the generated QSL card">
                 </div>
             </div>
         </div>
+
+        <footer class="footer mt-auto py-3">
+          <div class="container">
+              <div class="text-muted d-flex justify-content-between">
+                  <div>&copy; 2020 KB6EE</div>
+                  <div>
+                      <a href="https://github.com/classabbyamp/qsl-generator" class="text-reset">
+                          <i class="fa fa-lg fa-github"></i> Source on GitHub
+                      </a>
+                  </div>
+              </div>
+          </div>
+        </footer>
+
         <script src="{{ url_for('static', filename='js/jquery-3.4.1.min.js') }}"></script>
         <script src="{{ url_for('static', filename='js/popper-1.16.0.min.js') }}"></script>
         <script src="{{ url_for('static', filename='js/bootstrap-4.4.1.min.js') }}"></script>

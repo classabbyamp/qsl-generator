@@ -7,8 +7,6 @@ Released under the MIT License
 """
 
 import os
-import shutil
-from uuid import uuid4
 
 from flask import abort, Flask, jsonify, request, render_template, send_from_directory
 import jinja2
@@ -76,34 +74,34 @@ def gen_card():
     except Exception as err:
         return jsonify({"success": False, "error": err})
 
-    # write latex and outputs to files with UUID filename
-    latex_fn = str(uuid4())
-    try:
-        with open("files/" + latex_fn + ".tex", "w") as latex_file:
-            latex_file.write(latex)
-    except Exception as err:
-        return jsonify({"success": False, "error": err})
+    # write latex and outputs to files with a hash of the form data as a filename
+    latex_fn = str(hash(form))
+    if not os.path.isfile("files/" + latex_fn + ".tex"):
+        try:
+            with open("files/" + latex_fn + ".tex", "w") as latex_file:
+                latex_file.write(latex)
+        except Exception as err:
+            return jsonify({"success": False, "error": err})
 
-    try:
-        png_url = render_latex('png', latex)
-        png_resp = requests.get(png_url)
-        with open("files/" + latex_fn + ".png", "wb") as png_file:
-            png_file.write(png_resp.content)
-    except Exception as err:
-        return jsonify({"success": False, "error": err})
+    if not os.path.isfile("files/" + latex_fn + ".png"):
+        try:
+            png_url = render_latex('png', latex)
+            png_resp = requests.get(png_url)
+            with open("files/" + latex_fn + ".png", "wb") as png_file:
+                png_file.write(png_resp.content)
+        except Exception as err:
+            return jsonify({"success": False, "error": err})
 
-    try:
-        pdf_url = render_latex('pdf', latex)
-        pdf_resp = requests.get(pdf_url)
-        with open("files/" + latex_fn + ".pdf", "wb") as pdf_file:
-            pdf_file.write(pdf_resp.content)
-    except Exception as err:
-        return jsonify({"success": False, "error": err})
+    if not os.path.isfile("files/" + latex_fn + ".pdf"):
+        try:
+            pdf_url = render_latex('pdf', latex)
+            pdf_resp = requests.get(pdf_url)
+            with open("files/" + latex_fn + ".pdf", "wb") as pdf_file:
+                pdf_file.write(pdf_resp.content)
+        except Exception as err:
+            return jsonify({"success": False, "error": err})
 
-    return jsonify({"success": True,
-                    "img": f"/file/png/{latex_fn}",
-                    "pdf": f"/file/pdf/{latex_fn}",
-                    "src": f"/file/tex/{latex_fn}"})
+    return jsonify({"success": True, "file": latex_fn})
 
 def render_latex(fmt: str, latex: str):
     payload = {'code': latex, 'format': fmt}
@@ -119,14 +117,14 @@ def get_file(ft: str, fn: str):
     ft = ft.lower()
     fn = fn.lower()
 
-    if ft in ["pdf", "tex"]:
+    if ft in ["pdf", "png"]:
         try:
-            return send_from_directory("files", fn + "." + ft, as_attachment=True)
+            return send_from_directory("files", fn + "." + ft)
         except FileNotFoundError:
             abort(404)
-    elif ft == "png":
+    elif ft == "tex":
         try:
-            return send_from_directory("files", fn + ".png")
+            return send_from_directory("files", fn + ".tex", as_attachment=True)
         except FileNotFoundError:
             abort(404)
     else:
