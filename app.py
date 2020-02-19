@@ -43,18 +43,18 @@ def gen_card():
 
     latex_vars = {
         # Demographic
-        "callsigns": form.getlist("callsign[]")[0:2],
+        "callsigns": list(filter(None, form.getlist("callsign[]")[0:2])),
         "name": form.get("name", ""),
         # Address
-        "address": form.get("address", "").split("\n")[0:4],
+        "address": list(filter(None, form.get("address", "").split("\n")[0:4])),
         "country": form.get("country", ""),
         # Ham Info
-        "cq": form.getlist("cq[]")[0:3],
-        "itu": form.getlist("itu[]")[0:3],
-        "county": form.getlist("county[]")[0:3],
-        "qth": form.getlist("qth[]")[0:3],
-        "clubs": form.get("clubs", "").split("\n")[0:3],
-        "notes": form.get("notes", "").split("\n")[0:3],
+        "cq": list(filter(None, form.getlist("cq[]")[0:3])),
+        "itu": list(filter(None, form.getlist("itu[]")[0:3])),
+        "county": list(filter(None, form.getlist("county[]")[0:3])),
+        "qth": list(filter(None, form.getlist("qth[]")[0:3])),
+        "clubs": list(filter(None, form.get("clubs", "").split("\n")[0:3])),
+        "notes": list(filter(None, form.get("notes", "").split("\n")[0:3])),
         # Options
         "qso_lines": form.get("qsolines", 1),
         "call_cbox": True if "callcbox" in form else False,
