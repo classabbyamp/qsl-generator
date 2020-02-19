@@ -8,10 +8,10 @@ ENV FLASK_DEBUG True
 RUN mkdir /app
 WORKDIR /app
 
+ADD . /app
+
 RUN pip install -U pip && \
     pip install -Ur requirements.txt
-
-ADD . /app
 
 EXPOSE 5000
 

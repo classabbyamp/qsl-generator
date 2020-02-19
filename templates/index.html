@@ -4,6 +4,10 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
+
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{ url_for('static', filename='/favicon.png') }}" />
+        <link rel="shortcut icon" href="{{ url_for('static', filename='/favicon.ico') }}" />
+
         <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-4.4.1.min.css') }}">
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
@@ -12,11 +16,18 @@
     <body>
         <div class="container-lg mt-5 mb-5">
             <h1>QSL Card Generator <small class="text-muted">by KB6EE</small></h1>
-            <form role="form">
+            <p>
+            This app will generate a QSL card design based on the input paramters as a PDF. Fields marked by a <b class="text-danger">*</b> are required, but the rest are optional. The options at the
+            bottom allow you to customise the look and feel of the QSL card. If you would like, you can also download the LaTeX source file and customise it.
+            </p>
+            <form role="form" onsubmit="return false;">
                 <div class="form-group card card-body bg-light">
-                    <h3 class="card-title">Demographics</h3>
+                    <h3 class="card-title">Personal Info</h3>
                     <div class="form-group row">
-                        <label for="callsign" class="col-lg-2 col-form-label">Callsign <b class="text-danger">*</b></label>
+                        <label for="callsign" class="col-lg-2 col-form-label">
+                            Callsign <b class="text-danger">*</b>
+                            <small class="form-text text-muted">Maximum: 2</small>
+                        </label>
                         <div class="col-lg-4 copy-parent">
                             <div class="form-group input-group copy">
                                 <input type="text" class="form-control" id="callsign" name="callsign[]" required>
@@ -47,9 +58,12 @@
                     </div>
 
                     <div class="form-group card card-body bg-light">
-                        <h3>Ham Information</h3>
+                        <h3>Ham Info</h3>
                     <div class="form-group row">
-                        <label for="cq" class="col-lg-2 col-form-label">CQ Zone</label>
+                        <label for="cq" class="col-lg-2 col-form-label">
+                            CQ Zone
+                            <small class="form-text text-muted">Maximum: 3</small>
+                        </label>
                         <div class="col-lg-4 copy-parent">
                             <div class="form-group input-group copy">
                                 <input type="text" class="form-control" id="cq" name="cq[]">
@@ -58,7 +72,10 @@
                                 </div>
                             </div>
                         </div>
-                        <label for="itu" class="col-lg-2 col-form-label">ITU Zone</label>
+                        <label for="itu" class="col-lg-2 col-form-label">
+                            ITU Zone
+                            <small class="form-text text-muted">Maximum: 3</small>
+                        </label>
                         <div class="col-lg-4 copy-parent">
                             <div class="form-group input-group copy">
                                 <input type="text" class="form-control" id="itu" name="itu[]">
@@ -70,7 +87,10 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="county" class="col-lg-2 col-form-label">County</label>
+                        <label for="county" class="col-lg-2 col-form-label">
+                            County
+                            <small class="form-text text-muted">Maximum: 3</small>
+                        </label>
                         <div class="col-lg-4 copy-parent">
                             <div class="form-group input-group copy">
                                 <input type="text" class="form-control" id="county" name="county[]">
@@ -79,7 +99,10 @@
                                 </div>
                             </div>
                         </div>
-                        <label for="qth" class="col-lg-2 col-form-label">QTH</label>
+                        <label for="qth" class="col-lg-2 col-form-label">
+                            QTH
+                            <small class="form-text text-muted">Maximum: 3</small>
+                        </label>
                         <div class="col-lg-4 copy-parent">
                             <div class="form-group input-group copy">
                                 <input type="text" class="form-control" id="qth" name="qth[]" placeholder="Location and Grid Square">
@@ -91,7 +114,10 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="club" class="col-lg-2 col-form-label">Clubs</label>
+                        <label for="club" class="col-lg-2 col-form-label">
+                            Clubs
+                            <small class="form-text text-muted">This space is designed for listing club affiliations</small>
+                        </label>
                         <div class="input-group col-lg-4">
                             <textarea data-limit-rows="true" class="form-control" id="club" name="clubs" rows="3"></textarea>
                         </div>
@@ -148,6 +174,9 @@
                         <label class="col-lg-2 col-form-label">County</label>
                         <div class="input-group col-lg-4">
                             <div class="form-check row pt-2">
+                                <input type="checkbox" id="countyhide" name="countyhide">
+                                <label for="countyhide">Hide county field?</label>
+                                <br>
                                 <input type="checkbox" id="countycbox" name="countycbox">
                                 <label for="countycbox">Show checkboxes?</label>
                                 <br>
@@ -169,7 +198,7 @@
                 </div>
 
                 <div class="text-center">
-                    <button type="button" class="btn btn-primary btn-lg mb-2" id="generate">Generate</button>
+                    <button type="submit" class="btn btn-primary btn-lg mb-2" id="generate">Generate</button>
                 </div>
             </form>
 

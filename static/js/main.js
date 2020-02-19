@@ -52,7 +52,9 @@ $(document).ready(function() {
     });
 
     // generate the QSL card with AJAX
-    $('button#generate').on('click', function() {
+    $('form').on('submit', function() {
+        // form validation
+        // form submission
         $.ajax({
             url: '/generate',
             data: $('form').serialize(),
