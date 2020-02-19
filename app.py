@@ -6,12 +6,20 @@ Copyright (C) 2020 classabbyamp
 Released under the MIT License
 """
 
+
+import atexit
 import os
+import time
+from datetime import timedelta
 
 from flask import abort, Flask, jsonify, request, render_template, send_from_directory
 import jinja2
 from jinja2 import Template
 import requests
+from timeloop import Timeloop
+
+
+tl = Timeloop()
 
 
 app = Flask(__name__)
@@ -130,3 +138,18 @@ def get_file(ft: str, fn: str):
             abort(404)
     else:
         abort(404)
+
+@tl.job(interval=timedelta(minutes=15))
+def cleanup():
+    print("[II] Cleaning up old files...")
+    os.system("find files -not -name '.keep' -mtime +1 -exec rm '{}' \;")
+
+
+tl.start()
+
+
+def end_tl():
+    tl.stop()
+
+
+atexit.register(end_tl)
