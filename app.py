@@ -62,6 +62,7 @@ def gen_card():
         "cq_rule": True if "cqrule" in form else False,
         "itu_cbox": True if "itucbox" in form else False,
         "itu_rule": True if "iturule" in form else False,
+        "county_hide": False if "countyhide" in form else True,
         "county_cbox": True if "countycbox" in form else False,
         "county_rule": True if "countyrule" in form else False,
         "qth_cbox": True if "qthcbox" in form else False,
