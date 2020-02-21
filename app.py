@@ -9,6 +9,7 @@ Released under the MIT License
 
 import atexit
 import os
+import re
 import time
 from datetime import timedelta
 
@@ -77,11 +78,21 @@ def gen_card():
         "qth_rule": True if "qthrule" in form else False,
     }
 
+    for field, val in latex_vars.items():
+        if isinstance(val, str):
+            val = tex_escape(val)
+        elif isinstance(val, list):
+            for i, item in enumerate(val):
+                if isinstance(item, str):
+                    val[i] = tex_escape(item)
+        latex_vars[field] = val
+
+
     try:
         template = latex_jinja_env.get_template('templates/qsl-card.tex')
         latex = template.render(latex_vars)
     except Exception as err:
-        return jsonify({"success": False, "error": err})
+        return jsonify({"success": False, "error": str(err)})
 
     # write latex and outputs to files with a hash of the form data as a filename
     latex_fn = str(hash(form))
@@ -90,7 +101,7 @@ def gen_card():
             with open("files/" + latex_fn + ".tex", "w") as latex_file:
                 latex_file.write(latex)
         except Exception as err:
-            return jsonify({"success": False, "error": err})
+            return jsonify({"success": False, "error": str(err)})
 
     if not os.path.isfile("files/" + latex_fn + ".png"):
         try:
@@ -99,7 +110,7 @@ def gen_card():
             with open("files/" + latex_fn + ".png", "wb") as png_file:
                 png_file.write(png_resp.content)
         except Exception as err:
-            return jsonify({"success": False, "error": err})
+            return jsonify({"success": False, "error": str(err)})
 
     if not os.path.isfile("files/" + latex_fn + ".pdf"):
         try:
@@ -108,7 +119,7 @@ def gen_card():
             with open("files/" + latex_fn + ".pdf", "wb") as pdf_file:
                 pdf_file.write(pdf_resp.content)
         except Exception as err:
-            return jsonify({"success": False, "error": err})
+            return jsonify({"success": False, "error": str(err)})
 
     return jsonify({"success": True, "file": latex_fn})
 
@@ -120,6 +131,28 @@ def render_latex(fmt: str, latex: str):
     if resp_data['status'] != 'success':
         raise Exception('Failed to render LaTeX: ' + resp_data["description"])
     return LATEX_URL + '/' + resp_data['filename']
+
+def tex_escape(text):
+    """
+        :param text: a plain text message
+        :return: the message escaped to appear correctly in LaTeX
+    """
+    conv = {
+        '&': r'\&',
+        '%': r'\%',
+        '$': r'\$',
+        '#': r'\#',
+        '_': r'\_',
+        '{': r'\{',
+        '}': r'\}',
+        '~': r'\textasciitilde{}',
+        '^': r'\^{}',
+        '\\': r'\textbackslash{}',
+        '<': r'\textless{}',
+        '>': r'\textgreater{}',
+    }
+    regex = re.compile('|'.join(re.escape(str(key)) for key in sorted(conv.keys(), key = lambda item: - len(item))))
+    return regex.sub(lambda match: conv[match.group()], text)
 
 @app.route("/file/<string:ft>/<string:fn>")
 def get_file(ft: str, fn: str):
