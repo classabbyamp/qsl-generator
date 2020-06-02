@@ -2,8 +2,8 @@ FROM python:3.8
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV FLASK_APP "app.py"
-ENV FLASK_ENV "development"
-ENV FLASK_DEBUG True
+ENV FLASK_ENV "production"
+ENV FLASK_DEBUG False
 
 RUN mkdir /app
 WORKDIR /app

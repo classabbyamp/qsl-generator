@@ -3,3 +3,4 @@ env/
 /files/*.pdf
 /files/*.tex
 /files/*.png
+/.vscode

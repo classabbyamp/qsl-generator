@@ -39,7 +39,7 @@ latex_jinja_env = jinja2.Environment(block_start_string='\BLOCK{',
                                      loader=jinja2.FileSystemLoader(os.path.abspath('.')))
 
 
-LATEX_URL = 'http://rtex.probablyaweb.site/api/v2'
+LATEX_URL = 'https://rtex.miaow.io/api/v2'
 
 
 @app.route('/')
@@ -76,6 +76,8 @@ def gen_card():
         "county_rule": True if "countyrule" in form else False,
         "qth_cbox": True if "qthcbox" in form else False,
         "qth_rule": True if "qthrule" in form else False,
+        "cfm_qso": True if "cfmqso" in form else False,
+        "cfm_rec": True if "cfmrec" in form else False,
     }
 
     for field, val in latex_vars.items():
@@ -95,7 +97,7 @@ def gen_card():
         return jsonify({"success": False, "error": str(err)})
 
     # write latex and outputs to files with a hash of the form data as a filename
-    latex_fn = str(hash(form))
+    latex_fn = hex(abs(hash(form)))[2:]
     if not os.path.isfile("files/" + latex_fn + ".tex"):
         try:
             with open("files/" + latex_fn + ".tex", "w") as latex_file:
