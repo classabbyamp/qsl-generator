@@ -20,6 +20,10 @@
             This app will generate a QSL card design based on the input paramters as a PDF. Fields marked by a <b class="text-danger">*</b> are required, but the rest are optional. The options at the
             bottom allow you to customise the look and feel of the QSL card. If you would like, you can also download the LaTeX source file and customise it.
             </p>
+            <p>
+                <i>Note: Currently, this site does not support Arabic, Hebrew, Korean, Thai, and probably some other languages/alphabets. If you would like support for these and have experience with
+                    them in LaTeX, please put in an issue or pull request on <a href="https://github.com/classabbyamp/qsl-generator">GitHub</a>.</i>
+            </p>
             <noscript>
                 <div class="alert alert-danger" role="alert">
                     Please enable javascript on this site!
@@ -51,7 +55,10 @@
                 <div class="form-group card card-body bg-light">
                     <h3 class="card-title">Mailing Address</h3>
                         <div class="form-group row">
-                            <label for="address" class="col-lg-2 col-form-label">Address <b class="text-danger">*</b></label>
+                            <label for="address" class="col-lg-2 col-form-label">
+                                Address <b class="text-danger">*</b>
+                                <small class="form-text text-muted">Maximum: 4 lines</small>
+                            </label>
                             <div class="input-group col-lg-4">
                                 <textarea data-limit-rows="true" class="form-control" id="address" name="address" rows="4" required></textarea>
                             </div>
@@ -145,6 +152,8 @@
                                 <option value="3">Three</option>
                             </select>
                         </div>
+                    </div>
+                    <div class="form-group row">
                         <label class="col-lg-2 col-form-label">Callsign</label>
                         <div class="input-group col-lg-4">
                             <div class="form-check row pt-2">
@@ -152,8 +161,6 @@
                                 <label for="callcbox">Show checkboxes?</label>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
                         <label class="col-lg-2 col-form-label">CQ Zone</label>
                         <div class="input-group col-lg-4">
                             <div class="form-check row pt-2">
@@ -164,6 +171,8 @@
                                 <label for="cqrule">Show an underline?</label>
                             </div>
                         </div>
+                    </div>
+                    <div class="form-group row">
                         <label class="col-lg-2 col-form-label">ITU Zone</label>
                         <div class="input-group col-lg-4">
                             <div class="form-check row pt-2">
@@ -174,8 +183,6 @@
                                 <label for="iturule">Show an underline?</label>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
                         <label class="col-lg-2 col-form-label">County</label>
                         <div class="input-group col-lg-4">
                             <div class="form-check row pt-2">
@@ -189,6 +196,8 @@
                                 <label for="countyrule">Show an underline?</label>
                             </div>
                         </div>
+                    </div>
+                    <div class="form-group row">
                         <label class="col-lg-2 col-form-label">QTH</label>
                         <div class="col-lg-4">
                             <div class="form-check row pt-2">
@@ -197,6 +206,16 @@
                                 <br>
                                 <input type="checkbox" id="qthrule" name="qthrule">
                                 <label for="qthrule">Show an underline?</label>
+                            </div>
+                        </div>
+                        <label class="col-lg-2 col-form-label">Confirmation</label>
+                        <div class="col-lg-4">
+                            <div class="form-check row pt-2">
+                                <input type="checkbox" id="cfmqso" name="cfmqso">
+                                <label for="cfmqso">Show Confirming QSO?</label>
+                                <br>
+                                <input type="checkbox" id="cfmrec" name="cfmrec">
+                                <label for="cfmrec">Show Confirming Reception?</label>
                             </div>
                         </div>
                     </div>
