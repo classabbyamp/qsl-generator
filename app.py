@@ -10,12 +10,10 @@ Released under the MIT License
 import atexit
 import os
 import re
-import time
 from datetime import timedelta
 
 from flask import abort, Flask, jsonify, request, render_template, send_from_directory
 import jinja2
-from jinja2 import Template
 import requests
 from timeloop import Timeloop
 
@@ -26,11 +24,11 @@ tl = Timeloop()
 app = Flask(__name__)
 
 
-latex_jinja_env = jinja2.Environment(block_start_string='\BLOCK{',
+latex_jinja_env = jinja2.Environment(block_start_string=r'\BLOCK{',
                                      block_end_string='}',
-                                     variable_start_string='\VAR{',
+                                     variable_start_string=r'\VAR{',
                                      variable_end_string='}',
-                                     comment_start_string='\#{',
+                                     comment_start_string=r'\#{',
                                      comment_end_string='}',
                                      line_statement_prefix='%%',
                                      line_comment_prefix='%#',
@@ -39,7 +37,7 @@ latex_jinja_env = jinja2.Environment(block_start_string='\BLOCK{',
                                      loader=jinja2.FileSystemLoader(os.path.abspath('.')))
 
 
-LATEX_URL = 'https://rtex.miaow.io/api/v2'
+LATEX_URL = os.environ.get('RTEX_URL', 'https://rtex.probablyaweb.site/api/v2')
 
 
 @app.route('/')
@@ -177,7 +175,7 @@ def get_file(ft: str, fn: str):
 @tl.job(interval=timedelta(minutes=15))
 def cleanup():
     print("[II] Cleaning up old files...")
-    os.system("find files -not -name '.keep' -mtime +1 -exec rm '{}' \;")
+    os.system(r"find files -not -name '.keep' -mtime +1 -exec rm '{}' \;")
 
 
 tl.start()
