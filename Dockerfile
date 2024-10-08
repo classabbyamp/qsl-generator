@@ -1,9 +1,9 @@
 FROM python:3.8
 
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV FLASK_APP "app.py"
-ENV FLASK_ENV "production"
-ENV FLASK_DEBUG False
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV FLASK_APP="app.py"
+ENV FLASK_ENV="production"
+ENV FLASK_DEBUG=False
 
 RUN mkdir /app
 WORKDIR /app
@@ -15,4 +15,4 @@ RUN pip install -U pip && \
 
 EXPOSE 5000
 
-CMD flask run --host=0.0.0.0
+CMD ["flask", "run", "--host=0.0.0.0"]
